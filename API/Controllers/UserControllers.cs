@@ -1,7 +1,4 @@
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
+
 using API.Data;
 using API.Entities;
 using Microsoft.AspNetCore.Mvc;
@@ -9,9 +6,8 @@ using Microsoft.EntityFrameworkCore;
 
 namespace API.Controllers
 {
-    [ApiController]
-    [Route("api/[controller]")]
-    public class UserControllers(DataContext context) : ControllerBase
+   
+    public class UserController (DataContext context) : BaseApiController
     {
 
         [HttpGet]
@@ -21,7 +17,6 @@ namespace API.Controllers
             return users;
         }
 
-        
         [HttpGet("{id:int}")]
         public async Task<ActionResult<AppUser>> GetUser(int id)
         {
