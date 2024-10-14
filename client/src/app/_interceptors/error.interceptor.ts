@@ -1,4 +1,4 @@
-import { HttpInterceptorFn } from '@angular/common/http';
+import { HttpErrorResponse, HttpInterceptorFn } from '@angular/common/http';
 import { inject } from '@angular/core';
 import { NavigationExtras, Router } from '@angular/router';
 import { ToastrService } from 'ngx-toastr';
@@ -10,24 +10,24 @@ const toastr = inject(ToastrService);
 
 
   return next(req).pipe(
-    catchError(error=>{
+    catchError((error: HttpErrorResponse)=>{
       if(error){
         switch (error.status) {
           case 400:
             if(error.error.errors){
               const modalStateErrors = [];
               for (const key in error.error.errors){
-                if(error.error.erros[key]){
+                if(error.error.errors[key]){
                   modalStateErrors.push(error.error.errors[key])
                 }
               }
               throw modalStateErrors.flat();
             }else {
-              toastr.error(error.error,error.status)
+              toastr.error(error.error,error.status.toString())
             }
             break;
         case 401:
-          toastr.error('Unauthorised',error.status)
+          toastr.error('Unauthorised',error.status.toString())
           break;
           case 404:
             router.navigateByUrl('/not found');
